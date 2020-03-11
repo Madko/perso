@@ -1,0 +1,9 @@
+---
+installonly_limit: 2
+rpms:
+  ensure:
+    present:
+      - glances
+      - iperf3
+    absent:
+      - nano

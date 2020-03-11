@@ -1,0 +1,31 @@
+---
+- name: "configure_repos"
+  hosts: machines
+  tasks:
+  - name: "Configuring Yum."
+    template:
+      src: yum.conf
+      dest: /tmp/yum.conf
+
+  - name: "Configuring official package repositories."
+    copy:
+      src: yum/CentOS-Base.repo 
+      dest: /tmp/CentOS-Base.repo 
+
+  - name: "Configuring SCLo package repositories."
+    yum:
+      name: "centos-release-scl"
+
+  - name: "Enabling Delta RPM."
+    yum:
+      name: "deltarpm"
+
+  - name: "Installing extras."
+    yum:
+      name: "{{rpms.ensure.present}}"
+      state: present
+
+  - name: "Removing useless packages."
+    yum:
+      name: "{{rpms.ensure.absent}}"
+      state: absent

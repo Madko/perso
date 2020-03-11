@@ -1,0 +1,9 @@
+---
+
+# Personnalisation du shell 
+#################################################
+- import_playbook: shell.yml 
+
+# Configuration yum et depots 
+#################################################
+- import_playbook: repos.yml 

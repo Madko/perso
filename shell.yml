@@ -1,0 +1,30 @@
+---
+- name: "Personnalisation post-install"
+  hosts: machines
+  tasks:
+  - name: "Configuring Bash shell for root."
+    copy:
+      src: bashrc-root
+      dest: /root/.bashrc
+
+  - name: "Configuring Bash shell for users."
+    copy:
+      src: bashrc-users
+      dest: /etc/skel/.bashrc 
+
+  - name: "Getting existing users."
+    shell: ls -A /home
+    register: users
+
+  - debug: msg="{{users}}"
+
+  - name: "Configuring Bash shell for existing users."
+    copy:
+      src: bashrc-users
+      dest: "/home/{{item}}/.bashrc"
+    with_items: "{{users.stdout_lines}}"
+
+  - name: "Configuring Vim."
+    copy:
+      src: vimrc
+      dest: /etc/vimrc
